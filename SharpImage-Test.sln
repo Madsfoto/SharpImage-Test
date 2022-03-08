@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.31903.59
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SharpImage-Test", "SharpImage-Test\SharpImage-Test.csproj", "{DFFDD1E2-B5C7-47A1-8845-B9C4659A97EA}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{DFFDD1E2-B5C7-47A1-8845-B9C4659A97EA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DFFDD1E2-B5C7-47A1-8845-B9C4659A97EA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DFFDD1E2-B5C7-47A1-8845-B9C4659A97EA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DFFDD1E2-B5C7-47A1-8845-B9C4659A97EA}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {28AD2C34-2A23-4DDF-B67F-7123DAEECC98}
+	EndGlobalSection
+EndGlobal
