@@ -16,58 +16,7 @@ namespace SharpImageTest
 
         static int[,,] arr3dDiff = new int[ImageWidth, ImageHeight, RGB]; // pixel X,pixel Y,(R,G,B). Values are the current furthest difference from average
 
-
         static int imgNr = 0;
-
-        static void Setarr3dDiff(int x, int y, Rgba32 rgba)
-        {
-            // read from arr3d[]
-            // write new data to arr3dDiff[]
-            // Test if current distance to average is larger than previous distance, if so: Set new values
-
-            int redArr = arr3d[x, y, 0];
-            int greenArr = arr3d[x, y, 1];
-            int blueArr = arr3d[x, y, 2];
-
-            int redDiff = arr3dDiff[x, y, 0];
-            int greenDiff = arr3dDiff[x, y, 1];
-            int blueDiff = arr3dDiff[x, y, 2];
-
-            int redPixel = rgba.R;
-            int greenPixel = rgba.G;
-            int bluePixel = rgba.B;
-
-
-
-            double euclideanDistanceArr_Pixel = Math.Sqrt(Math.Pow((redArr - redPixel), 2) + Math.Pow((greenArr - greenPixel), 2) + Math.Pow((blueArr - bluePixel), 2));
-            double euclideanDistanceDiffArr = Math.Sqrt(Math.Pow((redDiff - redPixel), 2) + Math.Pow((greenDiff - greenPixel), 2) + Math.Pow((blueDiff - bluePixel), 2));
-
-
-
-
-            if (euclideanDistanceArr_Pixel > euclideanDistanceDiffArr)
-            {
-
-                arr3dDiff[x, y, 0] = rgba.R;
-                arr3dDiff[x, y, 1] = rgba.G;
-                arr3dDiff[x, y, 2] = rgba.B;
-            }
-
-        }
-
-        static void Setarr3d(int x, int y, Rgba32 rgba)
-        {
-            arr3d[x, y, 0] = arr3d[x, y, 0] + rgba.R;
-            arr3d[x, y, 1] = arr3d[x, y, 1] + rgba.G;
-            arr3d[x, y, 2] = arr3d[x, y, 2] + rgba.B;
-
-        }
-
-
-        static void IncrNrImg()
-        {
-            imgNr++;
-        }
 
         static void SetPerPixelRGBValues(string image)
         {
@@ -105,6 +54,32 @@ namespace SharpImageTest
 
         }
 
+        static Image ArrayToImage(int[,,] arr)
+        {
+            Image<Rgba32> newImg = new Image<Rgba32>(ImageWidth, ImageHeight);
+
+            for (int x = 0; x < ImageWidth; x++)
+            {
+                for (int y = 0; y < ImageHeight; y++)
+                {
+                    newImg[x, y] = new Rgba32(
+                    (byte)arr[x, y, 0],
+                    (byte)arr[x, y, 1],
+                    (byte)arr[x, y, 2]
+                );
+
+
+                }
+            }
+
+            return newImg;
+
+        }
+
+        static void WritePNG(Image img, string number)
+        {
+            img.SaveAsPng(number + ".png");
+        }
 
         static void SetPixelDistance(string image)
         {
@@ -129,30 +104,59 @@ namespace SharpImageTest
 
         }
 
-
-
-        static Image ArrayToImage(int[,,] arr)
+        static void Setarr3d(int x, int y, Rgba32 rgba)
         {
-            Image<Rgba32> newImg = new Image<Rgba32>(ImageWidth, ImageHeight);
-
-            for (int x = 0; x < ImageWidth; x++)
-            {
-                for (int y = 0; y < ImageHeight; y++)
-                {
-                    newImg[x, y] = new Rgba32(
-                    (byte)arr[x, y, 0],
-                    (byte)arr[x, y, 1],
-                    (byte)arr[x, y, 2]
-                );
-
-
-                }
-            }
-
-            return newImg;
+            arr3d[x, y, 0] = arr3d[x, y, 0] + rgba.R;
+            arr3d[x, y, 1] = arr3d[x, y, 1] + rgba.G;
+            arr3d[x, y, 2] = arr3d[x, y, 2] + rgba.B;
 
         }
 
+
+        static void Setarr3dDiff(int x, int y, Rgba32 rgba)
+        {
+            // read from arr3d[]
+            // write new data to arr3dDiff[]
+            // Test if current distance to average is larger than previous distance, if so: Set new values
+
+            int redArr = arr3d[x, y, 0];
+            int greenArr = arr3d[x, y, 1];
+            int blueArr = arr3d[x, y, 2];
+
+            int redDiff = arr3dDiff[x, y, 0];
+            int greenDiff = arr3dDiff[x, y, 1];
+            int blueDiff = arr3dDiff[x, y, 2];
+
+            int redPixel = rgba.R;
+            int greenPixel = rgba.G;
+            int bluePixel = rgba.B;
+
+
+
+            double euclideanDistanceArr_Pixel = Math.Sqrt(Math.Pow((redArr - redPixel), 2) + Math.Pow((greenArr - greenPixel), 2) + Math.Pow((blueArr - bluePixel), 2));
+            double euclideanDistanceDiffArr = Math.Sqrt(Math.Pow((redDiff - redPixel), 2) + Math.Pow((greenDiff - greenPixel), 2) + Math.Pow((blueDiff - bluePixel), 2));
+
+
+
+
+            if (euclideanDistanceArr_Pixel > euclideanDistanceDiffArr)
+            {
+
+                arr3dDiff[x, y, 0] = rgba.R;
+                arr3dDiff[x, y, 1] = rgba.G;
+                arr3dDiff[x, y, 2] = rgba.B;
+            }
+
+        }
+
+        
+
+        static void IncrNrImg()
+        {
+            imgNr++;
+        }
+
+        
         static void WriteArray(int[,,] arr, string filename)
         {
             using (var sw = new StreamWriter(filename + ".txt"))
@@ -175,10 +179,7 @@ namespace SharpImageTest
         }
 
 
-        static void WritePNG(Image img, string number)
-        {
-            img.SaveAsPng(number + ".png");
-        }
+       
 
         static void Main(string[] args)
         {
@@ -195,7 +196,7 @@ namespace SharpImageTest
 
             foreach (var pngFile in fileList)
             {
-                SetPerPixelRGBValues(pngFile);  // Works 8 mar 2022
+                SetPerPixelRGBValues(pngFile);  
                 IncrNrImg();
             }
 
