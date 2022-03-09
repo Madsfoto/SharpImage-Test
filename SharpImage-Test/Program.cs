@@ -16,8 +16,6 @@ namespace SharpImageTest
 
         static int[,,] arr3dDiff = new int[ImageWidth, ImageHeight, RGB]; // pixel X,pixel Y,(R,G,B). Values are the current furthest difference from average
 
-        static int imgNr = 0;
-
         static void SetPerPixelRGBValues(string image)
         {
 
@@ -39,7 +37,7 @@ namespace SharpImageTest
 
         }
 
-        static void CalculateAverages()
+        static void CalculateAverages(int imgNr)
         {
             for (int x = 0; x < ImageWidth; x++)
             {
@@ -150,39 +148,19 @@ namespace SharpImageTest
         }
 
         
-
-        static void IncrNrImg()
-        {
-            imgNr++;
-        }
-
-        
-        static void WriteArray(int[,,] arr, string filename)
-        {
-            using (var sw = new StreamWriter(filename + ".txt"))
-            {
-                for (int i = 0; i < ImageWidth; i++)
-                {
-                    sw.Write(arr[i, 300, 0] + " ");
-                    sw.Write(arr[i, 300, 1] + " ");
-                    sw.Write(arr[i, 300, 2] + " ");
-
-
-
-                    sw.Write("\n");
-                }
-
-                sw.Flush();
-                sw.Close();
-            }
-
-        }
-
-
-       
-
         static void Main(string[] args)
         {
+            int imgNr = 0;
+            string outputFilename = "";
+            if(args.Length == 0)
+            {
+                outputFilename = "a";
+            }
+            else
+            {
+                outputFilename = args[0];
+            }
+
             // 1: List all images in current folder
             Stopwatch sw = new Stopwatch();
             sw.Start();
@@ -197,10 +175,10 @@ namespace SharpImageTest
             foreach (var pngFile in fileList)
             {
                 SetPerPixelRGBValues(pngFile);  
-                IncrNrImg();
+                imgNr++;
             }
 
-            CalculateAverages();
+            CalculateAverages(imgNr);
 
             Image averageImg = ArrayToImage(arr3d);
 
@@ -209,7 +187,7 @@ namespace SharpImageTest
 
             // Currently have the average pixel value for each pixel in arr3d (of all the images in the current folder)
 
-            long imgNrLong = 0;
+            int outputFileNumber = 0;
 
             foreach (var pngFile in fileList)
             {
@@ -217,8 +195,8 @@ namespace SharpImageTest
 
                 Image img = ArrayToImage(arr3dDiff);
 
-                WritePNG(img, "a" + imgNrLong.ToString());
-                imgNrLong++;
+                WritePNG(img, outputFilename + outputFileNumber.ToString());
+                outputFileNumber++;
 
             }
 
